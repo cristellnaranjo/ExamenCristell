@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nuevo empe&ntilde;o</title>
+  </head>
+  <body>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Raleway&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBnd6XWLf7-xStgB-93M_QrwvUa4Iz-Bx0",
+    authDomain: "examen-cris-751f7.firebaseapp.com",
+    databaseURL: "https://examen-cris-751f7.firebaseio.com",
+    projectId: "examen-cris-751f7",
+    storageBucket: "examen-cris-751f7.appspot.com",
+    messagingSenderId: "690107220407",
+    appId: "1:690107220407:web:73d623352b907fb79b6832"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+
+var dataDB = firebase.database().ref('Clientes');
+var dataDBP = firebase.database().ref('Prendas');
+var dataDBE = firebase.database().ref('Empenios');
+
+var clientes={};
+var prendas={};
+
+dataDB.on('value', function(datos)
+{
+    clientes=datos.val();
+    var select= document.getElementById('clientes');
+    $.each(clientes, function(indice,valor)
+    {
+       var option= document.createElement("option");
+       option.setAttribute("value", indice);
+       option.setAttribute("label", valor.nombre);
+       select.appendChild(option);
+    });
+  }, function(objetoError){
+      console.log('Error de lectura:'+objetoError.code);
+});
+getPrenda();
+function getPrenda(){
+  dataDBP.on('value', function(datos)
+  {
+      prendas=datos.val();
+      for(var i=1; i<=3; i++){
+        var select= document.getElementById('prenda_'+i);
+        $.each(prendas, function(indice,valor)
+        {
+           var option= document.createElement("option");
+           option.setAttribute("value", indice);
+           option.setAttribute("label", valor.descripcion);
+           select.appendChild(option);
+        });
+      }
+
+  });
+
+}
+
+function guardarEmp(){
+  var user= document.getElementById('clientes');
+  var d= new Date();
+  var m=d.getMonth()+1;
+  mes=(m<10)? '0'+m:m;
+  var fechag = d.getFullYear()+"-"+mes+"-"+d.getDate();
+  dataDB.child(user.value).child('empenio').push({
+    fecha: fechag
+  });
+
+    alert('Cliente seleccionado');
+}
+function calcularTotal(idEmp){
+  var user = document.getElementById('clientes');
+
+  var query = dataDB.child(user.value).child('empenio').limitToLast(1);
+  query.on('child_added',function(snap)
+  {
+    document.getElementById(idEmp).value=snap.key;
+  });
+  var id = document.getElementById(idEmp).value;
+  var pzas=0;
+  var total=0;
+  for (var i = 1; i <=3; i++) {
+    var pren=document.getElementById('prenda_'+i).value;
+    var val=document.getElementById('valor_'+i).value;
+    if(pren!=0)
+    {
+      pzas++;
+      total+=parseInt(val);
+      dataDBE.push({
+        idEmp: id,
+        codpren: pren
+      });
+    }
+  }
+  dataDB.child(user.value).child('empenio').child(id).update({
+    pzas: pzas,
+    total: total
+  });
+  alert("Empenio realizado");
+
+}
+function getValor(prendax, valorx){
+  document.getElementById(valorx).value="";
+  var prenda= dataDBP.child(prendax);
+  prenda.on('value',function(data){
+    var pren=data.val();
+    document.getElementById(valorx).value=pren.valor;
+  });
+}
+
+</script>
+<style>
+.nombre{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(10%, -500%);
+        height: 40px;
+        text-align-last: center;
+        background: #ffffff;
+}
+.btnnombre{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        color: #ffffff;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 150px;
+        transform: translate(300%, -500%);
+        height: 40px;
+        text-align: center;
+        background: #7ed957;
+        border: none;
+}
+.prenda1{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(10%, -100%);
+        height: 40px;
+        text-align-last: center;
+        background: #ffffff;
+}
+.prenda2{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(10%, 50%);
+        height: 40px;
+        text-align-last: center;
+        background: #ffffff;
+}
+.prenda3{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(10%, 200%);
+        height: 40px;
+        text-align-last: center;
+        background: #ffffff;
+        text-align: center;
+}
+.btn1{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 150px;
+        transform: translate(300%, -100%);
+        height: 40px;
+        text-align: center;
+        background: #ffffff;
+        border: none;
+}
+.btn2{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 150px;
+        transform: translate(300%, 28%);
+        height: 40px;
+        text-align: center;
+        background: #ffffff;
+        border: none;
+}
+.btn3{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 150px;
+        transform: translate(300%, 160%);
+        height: 40px;
+        text-align: center;
+        background: #ffffff;
+        border: none;
+}
+.boton{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        color:#ffffff;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(35%, 500%);
+        height: 40px;
+        text-align: center;
+        background: #7ed957;
+        border: none;
+}
+
+.descripcion{
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   font-size: 2em;
+   font-family: 'Raleway', sans-serif;
+   transform: translate(10%, -300%);
+}
+.descripcion2{
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   font-size: 1.8em;
+   width: 700px;
+   font-family: 'Montserrat', sans-serif;
+   transform: translate(-22%, -300%);
+}
+</style>
+<img src="https://fotos.subefotos.com/7511f8c64c8a7c9722bfe91ff97a556co.png" width="100%">
+  <form action="" method="post">
+    <input type="hidden" id="idEmp">
+    <select class="nombre" id="clientes">
+        <option value="0">Elige un usuario</option>
+    </select>
+  <button class="btnnombre" type="button" onclick="guardarEmp()">Guardar</button>
+
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <select class="prenda1" id="prenda_1" onchange="getValor(this.value, 'valor_1')">
+            <option value="0">Elige producto</option>
+          </select>
+        </td>
+        <td>
+          <input class="btn1" type="number" id="valor_1">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select class="prenda2" id="prenda_2" onchange="getValor(this.value, 'valor_2')">
+            <option value="0">Elige producto</option>
+          </select>
+        </td>
+        <td>
+          <input class="btn2" type="number" id="valor_2">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select class="prenda3" id="prenda_3" onchange="getValor(this.value, 'valor_3')">
+            <option value="0">Elige producto</option>
+          </select>
+          <input class="btn3" type="number" id="valor_3">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <div>
+    <button class="boton" id="finalizar" type="button" onclick="calcularTotal('idEmp')">Finalizar Empe&ntilde;o</button>
+  </div>
+  </form>
+  <dix class="descripcion">Detalles del empe&ntilde;o</div>
+  <dix class="descripcion2">Nuevo Empe&ntilde;o</div>
+</body>
+</html>

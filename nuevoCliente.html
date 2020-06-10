@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nuevo cliente</title>
+  </head>
+  <body>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Raleway&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+     <script>
+       // Your web app's Firebase configuration
+       var firebaseConfig = {
+        apiKey: "AIzaSyBnd6XWLf7-xStgB-93M_QrwvUa4Iz-Bx0",
+        authDomain: "examen-cris-751f7.firebaseapp.com",
+        databaseURL: "https://examen-cris-751f7.firebaseio.com",
+        projectId: "examen-cris-751f7",
+        storageBucket: "examen-cris-751f7.appspot.com",
+        messagingSenderId: "690107220407",
+        appId: "1:690107220407:web:73d623352b907fb79b6832"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+
+  var dataDB= firebase.database().ref('Clientes').push();
+  function enviar()
+  {
+    var nombre= document.getElementById('nombre');
+    var apellido= document.getElementById('apellido');
+    var telefono= document.getElementById('telefono');
+    dataDB.set(
+      {
+        nombre: nombre.value,
+        apellido: apellido.value,
+        telefono: telefono.value
+      }
+    );
+    alert('Cliente registrado correctamente');
+    window.history.back();
+  }
+
+
+</script>
+<style>
+.nombre{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(-50%, -50%);
+        height: 40px;
+        text-align: center;
+        background: #ffffff;
+}
+.apellido{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(-50%, 95%);
+        height: 40px;
+        text-align: center;
+        background: #ffffff;
+}
+.telefono{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(-50%, 240%);
+        height: 40px;
+        text-align: center;
+        background: #ffffff;
+}
+.boton{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        color:#ffffff;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(-50%, 500%);
+        height: 40px;
+        text-align: center;
+        background: #7ed957;
+}
+</style>
+<form action="" method="post">
+  <img src="https://fotos.subefotos.com/67d3c389b5caf9ae89d19d02474db3cfo.png" width="100%">
+  <input class="nombre" type="text" name="nombre" id="nombre" placeholder="Nombre" required /><br><br />
+  <input class="apellido" type="text" name="apellido" id="apellido" placeholder="Apellido" required /><br><br />
+  <input class="telefono" type="number" name="telefono" id="telefono" placeholder="Telefono" required /><br><br />
+  <button class="boton" type="button" onclick="enviar()">Guardar</button>
+</form>
+
+  </body>
+</html>

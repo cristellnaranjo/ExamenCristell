@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <title>Nueva prenda</title>
+  </head>
+  <body>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Raleway&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+     <script>
+       // Your web app's Firebase configuration
+       var firebaseConfig = {
+        apiKey: "AIzaSyBnd6XWLf7-xStgB-93M_QrwvUa4Iz-Bx0",
+        authDomain: "examen-cris-751f7.firebaseapp.com",
+        databaseURL: "https://examen-cris-751f7.firebaseio.com",
+        projectId: "examen-cris-751f7",
+        storageBucket: "examen-cris-751f7.appspot.com",
+        messagingSenderId: "690107220407",
+        appId: "1:690107220407:web:73d623352b907fb79b6832"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+
+  var dataDB= firebase.database().ref('Prendas').push();
+  function enviar()
+  {
+    var nombre= document.getElementById('descripcion');
+    var apellido= document.getElementById('valor');
+    dataDB.set(
+      {
+        descripcion: descripcion.value,
+        valor: valor.value
+      }
+    );
+    alert('Prenda registrada correctamente');
+    window.history.back();
+  }
+
+
+</script>
+<style>
+.descripcion{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(-50%, 30%);
+        height: 40px;
+        text-align: center;
+        background: #ffffff;
+}
+.valor{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(-50%, 185%);
+        height: 40px;
+        text-align: center;
+        background: #ffffff;
+}
+.boton{
+        border-collapse: collapse;
+        border-radius: 2em;
+        overflow: hidden;
+        position: absolute;
+        color:#ffffff;
+        top: 50%;
+        left: 50%;
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        width: 400px;
+        transform: translate(-50%, 500%);
+        height: 40px;
+        text-align: center;
+        background: #7ed957;
+}
+</style>
+<form action="" method="post">
+  <img src="https://fotos.subefotos.com/33c18077019d9782a7a2317f1f0d454eo.png" width="100%">
+  <input class="descripcion" type="text" name="descripcion" id="descripcion" placeholder="Descripcion" required /><br><br />
+  <input class="valor" type="number" name="valor" id="valor" placeholder="Valor" required /><br><br />
+  <button class="boton" type="button" onclick="enviar()">Guardar</button>
+</form>
+
+  </body>
+</html>
